@@ -1,10 +1,17 @@
 require: slotfilling/slotFilling.sc
   module = sys.zb-common
+
+require: scripts/functions.js
+require: scripts/config.js
+
 theme: /
 
+    # ─── СТАРТ ───────────────────────────────────────────────────────────────
     state: Start
         q!: $regex</start>
-        a: Здравствуйте! Я Алсу, HR-специалист ОЭЗ «Алабуга». Нашла ваше резюме и хотела бы обсудить интересную вакансию. Вы сейчас в поиске работы?
+        script:
+            speakFirst("greeting")
+        a: {{$temp.gptResponse}}
         state: Yes
             intent!: /да
             go!: /AskRelocation
@@ -12,8 +19,11 @@ theme: /
             intent!: /нет
             go!: /Retention
 
+    # ─── УДЕРЖАНИЕ ───────────────────────────────────────────────────────────
     state: Retention
-        a: Понимаю, что сейчас не в активном поиске. Но ваш опыт действительно привлёк внимание — предложение может оказаться интересным. Давайте я коротко расскажу?
+        script:
+            speak("retention")
+        a: {{$temp.gptResponse}}
         state: Yes
             intent!: /да
             go!: /AskRelocation
@@ -21,8 +31,11 @@ theme: /
             intent!: /нет
             go!: /DoneReject
 
+    # ─── ПЕРЕЕЗД ─────────────────────────────────────────────────────────────
     state: AskRelocation
-        a: ОЭЗ «Алабуга» — крупнейшая особая экономическая зона в Европе, Елабуга, Татарстан. ООО «Алабуга Девелопмент» — генподрядчик ОЭЗ. Работа на объекте в Елабуге. Вы рассматриваете переезд или ежедневные поездки?
+        script:
+            speak("ask_relocation")
+        a: {{$temp.gptResponse}}
         state: Yes
             intent!: /да
             go!: /TellConditions
@@ -30,8 +43,11 @@ theme: /
             intent!: /нет
             go!: /HandleRelocationObj
 
+    # ─── ВОЗРАЖЕНИЕ: ПЕРЕЕЗД ─────────────────────────────────────────────────
     state: HandleRelocationObj
-        a: У нас корпоративный транспорт — из Набережных Челнов, Нижнекамска, Менделеевска. Жильё ЖК «Южный Парк» от 4 000 руб/мес. Пропуск на авто через 3 мес. При таких условиях готовы рассмотреть?
+        script:
+            speak("handle_relocation_objection")
+        a: {{$temp.gptResponse}}
         state: Yes
             intent!: /да
             go!: /TellConditions
@@ -39,8 +55,11 @@ theme: /
             intent!: /нет
             go!: /DoneReject
 
+    # ─── УСЛОВИЯ ─────────────────────────────────────────────────────────────
     state: TellConditions
-        a: Корпоративный транспорт ежедневно из Елабуги, Челнов, Нижнекамска, Менделеевска. Жильё ЖК «Южный Парк» от 4 000 руб/мес, совместное проживание. Пропуск на авто через 3 мес. Трудоустройство по ТК РФ. Вас устраивают такие условия?
+        script:
+            speak("tell_conditions")
+        a: {{$temp.gptResponse}}
         state: Yes
             intent!: /да
             go!: /TellPosition
@@ -48,8 +67,11 @@ theme: /
             intent!: /нет
             go!: /DoneReject
 
+    # ─── ДОЛЖНОСТЬ И ЗАРПЛАТА ────────────────────────────────────────────────
     state: TellPosition
-        a: Мы рассматриваем вас на должность Младшего Специалиста ПТО — заработная плата от 150 000 рублей до вычета НДФЛ. Такое предложение вас интересует?
+        script:
+            speak("tell_position")
+        a: {{$temp.gptResponse}}
         state: Yes
             intent!: /да
             go!: /AskExperience
@@ -57,20 +79,29 @@ theme: /
             intent!: /нет
             go!: /DoneReject
 
+    # ─── ОПЫТ ────────────────────────────────────────────────────────────────
     state: AskExperience
-        a: Расскажите об опыте работы — где работали, какие задачи выполняли? Особенно интересует опыт с AutoCAD, Word и Excel.
-        state: Told
+        script:
+            speak("ask_experience")
+        a: {{$temp.gptResponse}}
+        state: Next
             event!: noMatch
             go!: /PresentVacancy
 
+    # ─── ПРЕЗЕНТАЦИЯ ВАКАНСИИ ────────────────────────────────────────────────
     state: PresentVacancy
-        a: Спасибо! Младший Специалист ПТО занимается подготовкой ТЗ для подрядчиков, ведением документооборота, контролем расхода материалов и исполнительной документацией. Условия: от 150 000 руб, корпоративный транспорт, карьерный рост. Если нет вопросов — расскажу о корпоративной культуре.
+        script:
+            speak("present_vacancy")
+        a: {{$temp.gptResponse}}
         state: Next
             event!: noMatch
             go!: /AskGames
 
+    # ─── АССЕССМЕНТЫ ─────────────────────────────────────────────────────────
     state: AskGames
-        a: У нас 2 раза в год деловые игры-ассессменты — Business Cats, Civilization, Грузовики. Не компьютерные — оценка аналитики и лидерства. При трудоустройстве — Business Cats за 3 дня. Как вы к ним относитесь?
+        script:
+            speak("ask_games")
+        a: {{$temp.gptResponse}}
         state: Yes
             intent!: /да
             go!: /AskMotivation
@@ -78,8 +109,11 @@ theme: /
             intent!: /нет
             go!: /HandleGamesObj
 
+    # ─── ВОЗРАЖЕНИЕ: АССЕССМЕНТЫ ─────────────────────────────────────────────
     state: HandleGamesObj
-        a: Это не только оценка — знакомство с руководством и коллегами, обмен опытом. При таком формате готовы рассмотреть?
+        script:
+            speak("handle_games_objection")
+        a: {{$temp.gptResponse}}
         state: Yes
             intent!: /да
             go!: /AskMotivation
@@ -87,8 +121,11 @@ theme: /
             intent!: /нет
             go!: /DoneReject
 
+    # ─── МОТИВАЦИЯ ───────────────────────────────────────────────────────────
     state: AskMotivation
-        a: О системе мотивации: договор срочный 3 мес с продлением. Зарплата: 25% оклад + 50% за выполнение обязанностей + 25% KPI. Итого от 150 000 рублей. Вы рассматриваете такую систему?
+        script:
+            speak("ask_motivation")
+        a: {{$temp.gptResponse}}
         state: Yes
             intent!: /да
             go!: /AskOvertime
@@ -96,8 +133,11 @@ theme: /
             intent!: /нет
             go!: /HandleMotivObj
 
+    # ─── ВОЗРАЖЕНИЕ: МОТИВАЦИЯ ───────────────────────────────────────────────
     state: HandleMotivObj
-        a: Система нацелена на результат — чем лучше выполняете план, тем выше доход. При полном выполнении итого от 150 000 руб. При таком подходе готовы?
+        script:
+            speak("handle_motivation_objection")
+        a: {{$temp.gptResponse}}
         state: Yes
             intent!: /да
             go!: /AskOvertime
@@ -105,8 +145,11 @@ theme: /
             intent!: /нет
             go!: /DoneReject
 
+    # ─── НЕНОРМИРОВАННЫЙ ГРАФИК ──────────────────────────────────────────────
     state: AskOvertime
-        a: В строительстве бывают задержки — ЧП, срочная сдача. У нас это редкость, всегда компенсируется оплачиваемыми днями к отпуску. Как относитесь к ненормированному графику?
+        script:
+            speak("ask_overtime")
+        a: {{$temp.gptResponse}}
         state: Yes
             intent!: /да
             go!: /AskCrime
@@ -114,8 +157,11 @@ theme: /
             intent!: /нет
             go!: /HandleOvertimeObj
 
+    # ─── ВОЗРАЖЕНИЕ: ГРАФИК ──────────────────────────────────────────────────
     state: HandleOvertimeObj
-        a: Это редкость — только при ЧП или срочной сдаче. Всегда компенсируется днями к отпуску. Устраивает такой подход?
+        script:
+            speak("handle_overtime_objection")
+        a: {{$temp.gptResponse}}
         state: Yes
             intent!: /да
             go!: /AskCrime
@@ -123,8 +169,11 @@ theme: /
             intent!: /нет
             go!: /DoneReject
 
+    # ─── СУДИМОСТЬ ───────────────────────────────────────────────────────────
     state: AskCrime
-        a: Подскажите, пожалуйста, у вас имеется судимость или проблемы с законом?
+        script:
+            speak("ask_crime")
+        a: {{$temp.gptResponse}}
         state: No
             intent!: /нет
             go!: /AskIP
@@ -132,8 +181,11 @@ theme: /
             intent!: /да
             go!: /DoneReject
 
+    # ─── ИП / САМОЗАНЯТОСТЬ ──────────────────────────────────────────────────
     state: AskIP
-        a: У вас открыто ИП, самозанятость или другая форма предпринимательства?
+        script:
+            speak("ask_ip")
+        a: {{$temp.gptResponse}}
         state: No
             intent!: /нет
             go!: /AskSalary
@@ -141,8 +193,11 @@ theme: /
             intent!: /да
             go!: /HandleIPObj
 
+    # ─── ВОЗРАЖЕНИЕ: ИП ──────────────────────────────────────────────────────
     state: HandleIPObj
-        a: Обязательное условие ОЭЗ «Алабуга» — отсутствие действующих ИП. Если готовы закрыть — будем рады принять. Готовы закрыть?
+        script:
+            speak("handle_ip_objection")
+        a: {{$temp.gptResponse}}
         state: Yes
             intent!: /да
             go!: /AskSalary
@@ -150,32 +205,41 @@ theme: /
             intent!: /нет
             go!: /DoneReject
 
+    # ─── ЗАРПЛАТНЫЕ ОЖИДАНИЯ ─────────────────────────────────────────────────
     state: AskSalary
-        a: Каковы ваши зарплатные ожидания? От какой суммы рассматриваете предложения?
+        script:
+            speak("ask_salary")
+        a: {{$temp.gptResponse}}
         state: Next
             event!: noMatch
             go!: /AskEmployment
 
+    # ─── ТЕКУЩАЯ ЗАНЯТОСТЬ ───────────────────────────────────────────────────
     state: AskEmployment
-        a: Сейчас работаете официально? Когда сможете написать заявление на увольнение? Потребуется ли отработка 2 недели?
+        script:
+            speak("ask_employment")
+        a: {{$temp.gptResponse}}
         state: Next
             event!: noMatch
             go!: /AskCallback
 
+    # ─── ВРЕМЯ ЗВОНКА ────────────────────────────────────────────────────────
     state: AskCallback
-        a: Спасибо! Передаю ваше резюме руководителю, при положительном решении он свяжется в ближайшие дни. Когда вам удобно принять звонок?
-        state: Yes
-            intent!: /да
-            go!: /DoneOK
+        script:
+            speak("ask_callback")
+        a: {{$temp.gptResponse}}
         state: Next
             event!: noMatch
             go!: /DoneOK
-        state: No
-            intent!: /нет
-            go!: /DoneReject
 
+    # ─── УСПЕШНОЕ ЗАВЕРШЕНИЕ ─────────────────────────────────────────────────
     state: DoneOK
-        a: Зафиксировала! Спасибо за уделённое время. Передаю резюме руководителю — ожидайте звонок. Хорошего дня!
+        script:
+            speak("done_ok")
+        a: {{$temp.gptResponse}}
 
+    # ─── ОТКАЗ ───────────────────────────────────────────────────────────────
     state: DoneReject
-        a: Понимаю, спасибо за уделённое время! Желаю удачи в поиске работы. До свидания!
+        script:
+            speak("done_reject")
+        a: {{$temp.gptResponse}}
