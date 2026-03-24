@@ -1,8 +1,8 @@
 {
   "positions" : [ {
     "id" : "/Start",
-    "x" : 275,
-    "y" : 638
+    "x" : 7827,
+    "y" : 12
   }, {
     "id" : "/Hello",
     "x" : 275,
@@ -13,11 +13,103 @@
     "y" : 1741
   }, {
     "id" : "/NoMatch",
-    "x" : 275,
-    "y" : 2292
+    "x" : 17,
+    "y" : 268
   }, {
     "id" : "/Match",
     "x" : 275,
     "y" : 2842
+  }, {
+    "id" : "/Retention",
+    "x" : 7436,
+    "y" : 12
+  }, {
+    "id" : "/AskRelocation",
+    "x" : 7046,
+    "y" : 12
+  }, {
+    "id" : "/HandleRelocationObj",
+    "x" : 6655,
+    "y" : 12
+  }, {
+    "id" : "/TellConditions",
+    "x" : 6265,
+    "y" : 12
+  }, {
+    "id" : "/TellPosition",
+    "x" : 5874,
+    "y" : 12
+  }, {
+    "id" : "/AskExperience",
+    "x" : 5484,
+    "y" : 12
+  }, {
+    "id" : "/PresentVacancy",
+    "x" : 5093,
+    "y" : 12
+  }, {
+    "id" : "/AskGames",
+    "x" : 4703,
+    "y" : 12
+  }, {
+    "id" : "/HandleGamesObj",
+    "x" : 4312,
+    "y" : 12
+  }, {
+    "id" : "/AskMotivation",
+    "x" : 3922,
+    "y" : 12
+  }, {
+    "id" : "/HandleMotivObj",
+    "x" : 3531,
+    "y" : 12
+  }, {
+    "id" : "/AskOvertime",
+    "x" : 3141,
+    "y" : 12
+  }, {
+    "id" : "/HandleOvertimeObj",
+    "x" : 2750,
+    "y" : 12
+  }, {
+    "id" : "/AskCrime",
+    "x" : 2360,
+    "y" : 280
+  }, {
+    "id" : "/AskIP",
+    "x" : 2360,
+    "y" : 12
+  }, {
+    "id" : "/HandleIPObj",
+    "x" : 1969,
+    "y" : 12
+  }, {
+    "id" : "/AskSalary",
+    "x" : 1579,
+    "y" : 286
+  }, {
+    "id" : "/AskEmployment",
+    "x" : 1579,
+    "y" : 12
+  }, {
+    "id" : "/AskCallback",
+    "x" : 1188,
+    "y" : 12
+  }, {
+    "id" : "/DoneOK",
+    "x" : 798,
+    "y" : 12
+  }, {
+    "id" : "/DoneReject",
+    "x" : 407,
+    "y" : 12
+  }, {
+    "id" : "/HandleNoIntent",
+    "x" : 407,
+    "y" : 280
+  }, {
+    "id" : "/AlreadyDone",
+    "x" : 17,
+    "y" : 12
   } ]
 }
